@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101114">
+<title>InGaraGe — Car APK Store</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101114;color:#fff;font-family:Arial,sans-serif}
+header{background:#191a20;padding:22px 16px;border-bottom:2px solid #e5ad42}
+h1{margin:0;color:#f2bd51;font-size:30px}
+header p{color:#bbb;margin-bottom:0}
+main{padding:18px;max-width:1000px;margin:auto}
+input,select{width:100%;padding:14px;margin:12px 0;background:#202127;color:white;border:1px solid #555;border-radius:10px;font-size:16px}
+h2{margin-top:28px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+.card{background:#1c1d23;border:1px solid #36373d;border-radius:14px;padding:16px}
+.icon{font-size:32px}
+.card h3{margin:10px 0}
+.card p{color:#bbb;font-size:13px;min-height:30px}
+button,.download{display:block;width:100%;padding:12px;border:0;border-radius:8px;background:#e8b449;color:#171717;font-weight:bold;text-align:center;text-decoration:none;cursor:pointer}
+small{color:#aaa}
+footer{text-align:center;padding:25px;color:#999}
+</style>
+</head>
+<body>
+<header>
+<h1>🚘 InGaraGe</h1>
+<p>Avtomobillar uchun ilovalar do‘koni</p>
+</header>
+<main>
+<input id="search" placeholder="🔎 Ilova yoki avtomobilni qidirish..." oninput="render()">
+<h2>🚗 Avtomobil markasi</h2>
+<select id="brand" onchange="render()">
+<option value="all">Barcha avtomobillar</option>
+<option>Leapmotor</option>
+<option>BYD</option>
+<option>Deepal</option>
+<option>Changan</option>
+<option>Kaiyi</option>
+<option>Wuling</option>
+<option>Zeekr</option>
+</select>
+<h2>📱 Ilovalar</h2>
+<div class="grid" id="apps"></div>
+<h2>➕ O‘z APK faylingizni qo‘shish</h2>
+<p>APK faylni tanlang. Bu faqat shu sahifada vaqtinchalik ko‘rinadi.</p>
+<input type="file" id="apk" accept=".apk">
+<button onclick="addApk()">APK tanlash</button>
+<p><small>O‘rnatish imkoniyati avtomobilning Android tizimiga bog‘liq.</small></p>
+</main>
+<footer>InGaraGe © 2026 · Car APK Store</footer>
+<script>
+const data=[
+{name:"YouTube",icon:"▶️",desc:"Video tomosha qilish",brands:["Leapmotor","BYD","Deepal","Changan","Kaiyi","Wuling","Zeekr"]},
+{name:"Yandex Navigator",icon:"🗺️",desc:"Navigatsiya va xaritalar",brands:["Leapmotor","BYD","Deepal","Changan","Kaiyi","Wuling","Zeekr"]},
+{name:"Yandex Music",icon:"🎵",desc:"Musiqa tinglash",brands:["Leapmotor","BYD","Deepal","Changan","Kaiyi","Wuling","Zeekr"]},
+{name:"Google Maps",icon:"📍",desc:"Xaritalar va yo‘nalishlar",brands:["Leapmotor","BYD","Deepal","Changan","Kaiyi","Wuling","Zeekr"]},
+{name:"Spotify",icon:"🎧",desc:"Musiqa xizmati",brands:["Leapmotor","BYD","Deepal","Changan","Kaiyi","Wuling","Zeekr"]},
+{name:"Telegram",icon:"✈️",desc:"Xabarlar",brands:["Leapmotor","BYD","Deepal","Changan","Kaiyi","Wuling","Zeekr"]}
+];
+function render(){
+let q=document.getElementById('search').value.toLowerCase();
+let b=document.getElementById('brand').value;
+let list=data.filter(a=>(a.name+" "+a.desc).toLowerCase().includes(q)&&(b==="all"||a.brands.includes(b)));
+document.getElementById('apps').innerHTML=list.map(a=>`
+<div class="card"><div class="icon">${a.icon}</div><h3>${a.name}</h3>
+<p>${a.desc}</p><button onclick="alert('Rasmiy APK manbasini ulash keyingi bosqichda sozlanadi.')">Yuklab olish</button></div>`).join('');
+}
+function addApk(){
+let f=document.getElementById('apk').files[0];
+if(!f)return alert('Avval APK faylini tanlang.');
+let url=URL.createObjectURL(f);
+let el=document.createElement('div');
+el.className='card';
+el.innerHTML='<div class="icon">📦</div><h3></h3><p>Tanlangan APK</p><a class="download">Yuklab olish</a>';
+el.querySelector('h3').textContent=f.name;
+el.querySelector('a').href=url;
+el.querySelector('a').download=f.name;
+document.getElementById('apps').prepend(el);
+}
+render();
+</script>
+</body>
+</html>
