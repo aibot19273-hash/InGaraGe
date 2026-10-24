@@ -19,8 +19,10 @@ h2{margin-top:28px}
 .icon{font-size:32px}
 .card h3{margin:10px 0;overflow-wrap:anywhere}
 .card p{color:#bbb;font-size:13px;min-height:30px;overflow-wrap:anywhere}
-button,.download{display:block;width:100%;padding:12px;border:0;border-radius:8px;background:#e8b449;color:#171717;font-weight:bold;text-align:center;text-decoration:none;cursor:pointer}
+button,.download,.view-link{display:block;width:100%;padding:12px;border:0;border-radius:8px;background:#e8b449;color:#171717;font-weight:bold;text-align:center;text-decoration:none;cursor:pointer;margin-bottom:8px}
+.view-link{background:#343640;color:#fff;border:1px solid #555}
 button:hover,.download:hover{background:#ffd36b}
+.view-link:hover{background:#454752}
 small{color:#aaa}
 footer{text-align:center;padding:25px;color:#999}
 .badge{font-size:11px;color:#e8b449;overflow-wrap:anywhere}
@@ -45,7 +47,7 @@ footer{text-align:center;padding:25px;color:#999}
   <div class="grid" id="apps"></div>
 
   <h2>🛠️ Windows / ADB asboblari</h2>
-  <p class="note">Bu BAT fayllar Windows kompyuterida ishlatish uchun. Ishlatishdan oldin fayl ichidagi buyruqlarni tekshiring; ular avtomobil tizimiga o‘zgartirish kiritishi mumkin.</p>
+  <p class="note">Bu BAT fayllar Windows kompyuterida ishlatish uchun. Ishlatishdan oldin fayl ichidagi buyruqlarni tekshiring; ular avtomobil tizimiga o‘zgartirish kiritishi mumkin. Agar “Yuklab olish” 404 bersa, “Google Drive’da ochish”ni bosing. U ham 404 bersa, o‘sha fayl IDsi noto‘g‘ri yoki fayl o‘chirilgan bo‘lishi mumkin. Fayl egasi ulashish ruxsatini “Все, у кого есть ссылка” qilib qo‘yishi kerak.</p>
   <div class="grid" id="tools"></div>
 
   <h2>➕ O‘z APK faylingizni qo‘shish</h2>
@@ -58,7 +60,8 @@ footer{text-align:center;padding:25px;color:#999}
 
 <script>
 const allBrands = ["Leapmotor","BYD","Deepal","Changan","Kaiyi","Wuling","Zeekr"];
-function driveLink(id){return "https://drive.google.com/uc?export=download&id="+id;}
+function driveLink(id){return "https://drive.google.com/uc?export=download&id="+encodeURIComponent(id);}
+function driveViewLink(id){return "https://drive.google.com/file/d/"+encodeURIComponent(id)+"/view";}
 
 const data = [
   {name:"ReVanced YouTube",icon:"▶️",desc:"YouTube videolari",file:"1.apk",id:"1ivHN96QSlWgZRp8FBF1PMxp_HvTB6XU6",brands:allBrands},
@@ -95,12 +98,14 @@ function render(){
       <div class="icon">${a.icon}</div><h3>${a.name}</h3><p>${a.desc}</p>
       <div class="badge">${a.file}</div><br>
       <a class="download" href="${driveLink(a.id)}" target="_blank" rel="noopener">⬇ Yuklab olish</a>
+      <a class="view-link" href="${driveViewLink(a.id)}" target="_blank" rel="noopener">Google Drive’da ochish</a>
     </div>`).join(""):"<p>Ilova topilmadi.</p>";
 }
 function renderTools(){
   document.getElementById("tools").innerHTML=tools.map(t=>`
     <div class="card"><div class="icon">🖥️</div><h3>${t.name}</h3><p>${t.desc}</p>
-    <a class="download" href="${driveLink(t.id)}" target="_blank" rel="noopener">⬇ Yuklab olish</a></div>`).join("");
+    <a class="download" href="${driveLink(t.id)}" target="_blank" rel="noopener">⬇ Yuklab olish</a>
+    <a class="view-link" href="${driveViewLink(t.id)}" target="_blank" rel="noopener">Google Drive’da ochish</a></div>`).join("");
 }
 function addApk(){
   const f=document.getElementById("apk").files[0];
